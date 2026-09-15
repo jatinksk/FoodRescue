@@ -1,0 +1,16 @@
+{
+  "name": "foodrescue",
+  "version": "1.0.0",
+  "description": "FoodRescue - Surplus food donation and pickup management system",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  }
+}
