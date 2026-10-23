@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Dashboard | FoodRescue</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: #f6f8f5;
+      color: #18322b;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      width: 245px;
+      background: #12382f;
+      color: white;
+      padding: 28px 20px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 45px;
+      padding-left: 10px;
+    }
+
+    .logo span {
+      font-weight: 400;
+    }
+
+    .admin-label {
+      padding: 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .admin-label small {
+      display: block;
+      color: #a9c5ba;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .admin-label strong {
+      font-size: 14px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: #c9d9d3;
+      padding: 13px 12px;
+      text-align: left;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      width: 100%;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: #1d6b52;
+      color: white;
+    }
+
+    .logout {
+      position: absolute;
+      bottom: 25px;
+      left: 20px;
+      right: 20px;
+      border: 1px solid #47665d;
+      background: transparent;
+      color: #d9e5e0;
+      padding: 11px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: #ffffff12;
+    }
+
+    /* ================= MAIN ================= */
+
+    .main {
+      margin-left: 245px;
+      width: calc(100% - 245px);
+      padding: 35px 45px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+
+    .topbar h1 {
+      margin: 0 0 6px;
+      font-size: 32px;
+      letter-spacing: -1px;
+    }
+
+    .topbar p {
+      margin: 0;
+      color: #708078;
+      font-size: 14px;
+    }
+
+    .profile {
+      background: white;
+      border: 1px solid #e3e8e4;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    /* ================= SECTIONS ================= */
+
+    .page-section {
+      scroll-margin-top: 25px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ================= STAT CARDS ================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid #e3e8e4;
+      border-radius: 14px;
+      padding: 22px;
+      transition: 0.2s;
+    }
+
+    .stat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(20,60,45,0.06);
+    }
+
+    .stat small {
+      color: #77857f;
+      font-size: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      margin-top: 9px;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: #1d765a;
+      font-size: 12px;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 22px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e3e8e4;
+      border-radius: 15px;
+      padding: 25px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .refresh {
+      border: 1px solid #ccd8d1;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      color: #285d4c;
+    }
+
+    .refresh:hover {
+      background: #f1f7f3;
+    }
+
+    /* ================= TABLE ================= */
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      color: #7a8781;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 10px;
+      border-bottom: 1px solid #e8ece9;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #eef1ef;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .food-name {
+      font-weight: 700;
+    }
+
+    .food-donor {
+      display: block;
+      margin-top: 4px;
+      color: #84918b;
+      font-size: 11px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e8f3ec;
+      color: #1d765a;
+      padding: 5px 8px;
+      border-radius: 15px;
+      font-size: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 15px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .status-pending {
+      background: #fff4d9;
+      color: #936b00;
+    }
+
+    .status-approved {
+      background: #e4f1ff;
+      color: #27669b;
+    }
+
+    .status-completed {
+      background: #e5f4e9;
+      color: #287442;
+    }
+
+    .status-rejected {
+      background: #fde8e8;
+      color: #a33d3d;
+    }
+
+    /* ================= ACTION BUTTONS ================= */
+
+    .approve-btn,
+    .reject-btn {
+      border: 0;
+      padding: 7px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .approve-btn {
+      background: #e4f1e8;
+      color: #216b4e;
+    }
+
+    .approve-btn:hover {
+      background: #d3e9db;
+    }
+
+    .reject-btn {
+      background: #fde8e8;
+      color: #a33d3d;
+    }
+
+    .reject-btn:hover {
+      background: #f8d6d6;
+    }
+
+    .done-text {
+      color: #718078;
+      font-size: 11px;
+    }
+
+    /* ================= QUICK ACTIONS ================= */
+
+    .actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .action {
+      padding: 16px;
+      border: 1px solid #e3e8e4;
+      border-radius: 10px;
+      background: #fafcfb;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+    }
+
+    .action:hover {
+      border-color: #a9cabc;
+      background: #f3f8f4;
+    }
+
+    .action strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .action small {
+      color: #78857f;
+    }
+
+    /* ================= SYSTEM ================= */
+
+    .system {
+      margin-top: 22px;
+      background: #eaf4ed;
+      border: 1px solid #d5e8da;
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .system strong {
+      color: #1d765a;
+    }
+
+    .system p {
+      font-size: 12px;
+      color: #63736b;
+      margin-bottom: 0;
+    }
+
+    /* ================= PICKUP SECTION ================= */
+
+    .pickup-section {
+      margin-top: 25px;
+    }
+
+    .pickup-count {
+      color: #718078;
+      font-size: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 35px;
+      color: #7c8983;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: #7c8983;
+    }
+
+    .error {
+      text-align: center;
+      padding: 25px;
+      color: #b34a4a;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 1100px) {
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+      }
+
+      .logo {
+        font-size: 16px;
+        padding: 0;
+      }
+
+      .logo span,
+      .admin-label,
+      .nav button span,
+      .logout span {
+        display: none;
+      }
+
+      .main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 25px 18px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        display: block;
+      }
+
+      .profile {
+        margin-top: 15px;
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      Food<span>Rescue</span>
+    </div>
+
+    <div class="admin-label">
+      <small>ACCOUNT</small>
+      <strong>Administrator</strong>
+    </div>
+
+    <nav class="nav">
+
+      <button
+        id="dashboardNav"
+        class="active"
+        onclick="showDashboard()"
+      >
+        ◼ <span>Dashboard</span>
+      </button>
+
+      <button onclick="scrollToListings()">
+        ▤ <span>Food Listings</span>
+      </button>
+
+      <button onclick="showPickups()">
+        ♢ <span>Pickups</span>
+      </button>
+
+      <button onclick="showComingSoon('User Management')">
+        ◉ <span>Users</span>
+      </button>
+
+      <button onclick="showComingSoon('Reports & Analytics')">
+        ▥ <span>Reports</span>
+      </button>
+
+    </nav>
+
+    <button class="logout" onclick="logout()">
+      ⇥ <span>Logout</span>
+    </button>
+
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main">
+
+    <!-- DASHBOARD SECTION -->
+
+    <section
+      id="dashboardSection"
+      class="page-section"
+    >
+
+      <div class="topbar">
+
+        <div>
+
+          <h1>Admin Dashboard</h1>
+
+          <p>
+            Monitor the FoodRescue community and food recovery activity.
+          </p>
+
+        </div>
+
+        <div
+          class="profile"
+          id="profile"
+        >
+          Administrator
+        </div>
+
+      </div>
+
+
+      <!-- STATISTICS -->
+
+      <section class="stats">
+
+        <div class="stat">
+
+          <small>FOOD LISTINGS</small>
+
+          <strong id="donations">—</strong>
+
+          <span>
+            Total listings
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <small>SERVINGS LISTED</small>
+
+          <strong id="servings">—</strong>
+
+          <span>
+            Food quantity
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <small>COMPLETED PICKUPS</small>
+
+          <strong id="pickups">—</strong>
+
+          <span>
+            Successful rescues
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <small>VOLUNTEERS</small>
+
+          <strong id="volunteers">—</strong>
+
+          <span>
+            Registered volunteers
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- DASHBOARD CONTENT -->
+
+      <div class="content-grid">
+
+        <!-- FOOD LISTINGS -->
+
+        <section
+          class="panel"
+          id="listings"
+        >
+
+          <div class="panel-header">
+
+            <h2>Food Listings</h2>
+
+            <button
+              class="refresh"
+              onclick="loadDashboard()"
+            >
+              ↻ Refresh
+            </button>
+
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>FOOD</th>
+                  <th>CATEGORY</th>
+                  <th>QUANTITY</th>
+                  <th>LOCATION</th>
+                  <th>STATUS</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="foodTable">
+
+                <tr>
+
+                  <td
+                    colspan="5"
+                    class="loading"
+                  >
+                    Loading food listings...
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="panel">
+
+          <div class="panel-header">
+
+            <h2>Quick Actions</h2>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="action"
+              onclick="scrollToListings()"
+            >
+
+              <strong>
+                View Food Listings
+              </strong>
+
+              <small>
+                Monitor currently available surplus food.
+              </small>
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="showPickups()"
+            >
+
+              <strong>
+                Manage Pickups
+              </strong>
+
+              <small>
+                Review and manage volunteer pickup requests.
+              </small>
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="showComingSoon('User Management')"
+            >
+
+              <strong>
+                Manage Users
+              </strong>
+
+              <small>
+                Donors and volunteers management.
+              </small>
+
+            </button>
+
+
+            <button
+              class="action"
+              onclick="showComingSoon('Analytics')"
+            >
+
+              <strong>
+                View Analytics
+              </strong>
+
+              <small>
+                Food rescue statistics and reports.
+              </small>
+
+            </button>
+
+          </div>
+
+
+          <div class="system">
+
+            <strong>
+              ● System Status: Online
+            </strong>
+
+            <p>
+              FoodRescue backend and database are connected.
+            </p>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= PICKUP MANAGEMENT ================= -->
+
+    <section
+      id="pickupSection"
+      class="page-section pickup-section hidden"
+    >
+
+      <div class="topbar">
+
+        <div>
+
+          <h1>Pickup Management</h1>
+
+          <p>
+            Review and manage food pickup requests from volunteers.
+          </p>
+
+        </div>
+
+        <div
+          class="profile"
+          id="pickupProfile"
+        >
+          Administrator
+        </div>
+
+      </div>
+
+
+      <section class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>Pickup Requests</h2>
+
+            <div
+              class="pickup-count"
+              id="pickupCount"
+            >
+              Loading requests...
+            </div>
+
+          </div>
+
+          <button
+            class="refresh"
+            onclick="loadPickups()"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>ID</th>
+                <th>FOOD</th>
+                <th>DONOR</th>
+                <th>VOLUNTEER</th>
+                <th>QUANTITY</th>
+                <th>LOCATION</th>
+                <th>REQUESTED</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="pickupTable">
+
+              <tr>
+
+                <td
+                  colspan="9"
+                  class="loading"
+                >
+                  Loading pickup requests...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+  /* =====================================================
+     AUTHENTICATION
+  ===================================================== */
+
+  const savedToken =
+    localStorage.getItem("foodrescue_token");
+
+  const savedUser =
+    localStorage.getItem("foodrescue_user");
+
+
+  if (!savedToken || !savedUser) {
+
+    window.location.href =
+      "/login.html";
+
+  }
+
+
+  let currentUser = null;
+
+
+  try {
+
+    currentUser =
+      JSON.parse(savedUser);
+
+  } catch (error) {
+
+    localStorage.removeItem(
+      "foodrescue_token"
+    );
+
+    localStorage.removeItem(
+      "foodrescue_user"
+    );
+
+    window.location.href =
+      "/login.html";
+
+  }
+
+
+  /* =====================================================
+     ADMIN ROLE CHECK
+  ===================================================== */
+
+  if (
+    currentUser &&
+    currentUser.role !== "admin"
+  ) {
+
+    alert(
+      "Admin access required."
+    );
+
+    window.location.href =
+      "/login.html";
+
+  }
+
+
+  /* =====================================================
+     ADMIN PROFILE
+  ===================================================== */
+
+  if (currentUser) {
+
+    const profileText =
+      currentUser.name +
+      " • " +
+      currentUser.role;
+
+    document.getElementById(
+      "profile"
+    ).textContent = profileText;
+
+    document.getElementById(
+      "pickupProfile"
+    ).textContent = profileText;
+
+  }
+
+
+  /* =====================================================
+     LOAD DASHBOARD
+  ===================================================== */
+
+  async function loadDashboard() {
+
+    try {
+
+      const statsResponse =
+        await fetch(
+          "/api/stats",
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      const stats =
+        await statsResponse.json();
+
+
+      if (!statsResponse.ok) {
+
+        throw new Error(
+          stats.error ||
+          "Unable to load statistics"
+        );
+
+      }
+
+
+      document.getElementById(
+        "donations"
+      ).textContent =
+        stats.donations ?? 0;
+
+
+      document.getElementById(
+        "servings"
+      ).textContent =
+        stats.servings ?? 0;
+
+
+      document.getElementById(
+        "pickups"
+      ).textContent =
+        stats.pickups ?? 0;
+
+
+      document.getElementById(
+        "volunteers"
+      ).textContent =
+        stats.volunteers ?? 0;
+
+
+      const foodResponse =
+        await fetch(
+          "/api/food",
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      const food =
+        await foodResponse.json();
+
+
+      if (!foodResponse.ok) {
+
+        throw new Error(
+          food.error ||
+          "Unable to load food listings"
+        );
+
+      }
+
+
+      const table =
+        document.getElementById(
+          "foodTable"
+        );
+
+
+      if (!food.length) {
+
+        table.innerHTML = `
+          <tr>
+            <td
+              colspan="5"
+              class="empty"
+            >
+              No food listings available.
+            </td>
+          </tr>
+        `;
+
+        return;
+
+      }
+
+
+      table.innerHTML =
+        food.map(item => {
+
+          const status =
+            item.status ||
+            "available";
+
+          const statusClass =
+            "status-" +
+            String(status)
+              .toLowerCase();
+
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <div class="food-name">
+                  ${escapeHtml(
+                    item.food_name ||
+                    "Unnamed Food"
+                  )}
+                </div>
+
+                <span class="food-donor">
+                  ${escapeHtml(
+                    item.donor_name ||
+                    "Food donor"
+                  )}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <span class="tag">
+
+                  ${escapeHtml(
+                    item.category_name ||
+                    "General"
+                  )}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  String(
+                    item.quantity ?? "-"
+                  )
+                )}
+
+                ${escapeHtml(
+                  item.unit || ""
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  item.pickup_location ||
+                  "-"
+                )}
+
+              </td>
+
+
+              <td>
+
+                <span
+                  class="status ${statusClass}"
+                >
+
+                  ${escapeHtml(
+                    formatStatus(status)
+                  )}
+
+                </span>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }).join("");
+
+
+    } catch (error) {
+
+      console.error(
+        "Dashboard error:",
+        error
+      );
+
+
+      document.getElementById(
+        "foodTable"
+      ).innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="5"
+            class="error"
+          >
+
+            Unable to load dashboard data.
+
+            <br><br>
+
+            <small>
+              ${escapeHtml(
+                error.message
+              )}
+            </small>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     SHOW DASHBOARD
+  ===================================================== */
+
+  function showDashboard() {
+
+    document
+      .getElementById(
+        "dashboardSection"
+      )
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById(
+        "pickupSection"
+      )
+      .classList.add("hidden");
+
+
+    document
+      .getElementById(
+        "dashboardNav"
+      )
+      .classList.add("active");
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+
+    loadDashboard();
+
+  }
+
+
+  /* =====================================================
+     SHOW PICKUPS
+  ===================================================== */
+
+  async function showPickups() {
+
+    document
+      .getElementById(
+        "dashboardSection"
+      )
+      .classList.add("hidden");
+
+
+    document
+      .getElementById(
+        "pickupSection"
+      )
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById(
+        "dashboardNav"
+      )
+      .classList.remove("active");
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+
+    await loadPickups();
+
+  }
+
+
+  /* =====================================================
+     LOAD ADMIN PICKUPS
+  ===================================================== */
+
+  async function loadPickups() {
+
+    const table =
+      document.getElementById(
+        "pickupTable"
+      );
+
+
+    table.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="9"
+          class="loading"
+        >
+          Loading pickup requests...
+        </td>
+
+      </tr>
+
+    `;
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/pickups",
+          {
+            method: "GET",
+
+            headers: {
+              "Authorization":
+                "Bearer " +
+                savedToken
+            },
+
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load pickup requests"
+        );
+
+      }
+
+
+      document.getElementById(
+        "pickupCount"
+      ).textContent =
+        data.length +
+        (
+          data.length === 1
+            ? " pickup request"
+            : " pickup requests"
+        );
+
+
+      if (!data.length) {
+
+        table.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="9"
+              class="empty"
+            >
+
+              No pickup requests found.
+
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      table.innerHTML =
+        data.map(pickup => {
+
+          const status =
+            String(
+              pickup.request_status ||
+              "pending"
+            ).toLowerCase();
+
+
+          const statusClass =
+            "status-" +
+            status;
+
+
+          const requestedDate =
+            pickup.requested_at
+              ? new Date(
+                  pickup.requested_at
+                ).toLocaleString()
+              : "-";
+
+
+          let action = "";
+
+
+          if (status === "pending") {
+
+            action = `
+
+              <button
+                class="approve-btn"
+                onclick="approvePickup(
+                  ${pickup.request_id}
+                )"
+              >
+                Approve
+              </button>
+
+              <button
+                class="reject-btn"
+                onclick="rejectPickup(
+                  ${pickup.request_id}
+                )"
+              >
+                Reject
+              </button>
+
+            `;
+
+          } else {
+
+            action = `
+
+              <span class="done-text">
+                No action
+              </span>
+
+            `;
+
+          }
+
+
+          return `
+
+            <tr>
+
+              <td>
+                #${pickup.request_id}
+              </td>
+
+
+              <td>
+
+                <div class="food-name">
+                  ${escapeHtml(
+                    pickup.food_name ||
+                    "-"
+                  )}
+                </div>
+
+                <span class="food-donor">
+
+                  ${escapeHtml(
+                    pickup.category_name ||
+                    ""
+                  )}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  pickup.donor_name ||
+                  "-"
+                )}
+
+              </td>
+
+
+              <td>
+
+                <div class="food-name">
+                  ${escapeHtml(
+                    pickup.volunteer_name ||
+                    "-"
+                  )}
+                </div>
+
+                <span class="food-donor">
+
+                  ${escapeHtml(
+                    pickup.volunteer_phone ||
+                    pickup.volunteer_email ||
+                    ""
+                  )}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  String(
+                    pickup.quantity ?? "-"
+                  )
+                )}
+
+                ${escapeHtml(
+                  pickup.unit || ""
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  pickup.pickup_location ||
+                  "-"
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${escapeHtml(
+                  requestedDate
+                )}
+
+              </td>
+
+
+              <td>
+
+                <span
+                  class="status ${statusClass}"
+                >
+
+                  ${escapeHtml(
+                    formatStatus(status)
+                  )}
+
+                </span>
+
+              </td>
+
+
+              <td>
+
+                ${action}
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }).join("");
+
+
+    } catch (error) {
+
+      console.error(
+        "Pickup loading error:",
+        error
+      );
+
+
+      document.getElementById(
+        "pickupCount"
+      ).textContent =
+        "Unable to load requests";
+
+
+      table.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="9"
+            class="error"
+          >
+
+            Unable to load pickup requests.
+
+            <br><br>
+
+            <small>
+              ${escapeHtml(
+                error.message
+              )}
+            </small>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     APPROVE PICKUP
+  ===================================================== */
+
+  async function approvePickup(
+    requestId
+  ) {
+
+    const confirmed =
+      confirm(
+        "Approve this pickup request?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/pickups/" +
+          requestId +
+          "/approve",
+          {
+
+            method: "PUT",
+
+            headers: {
+              "Authorization":
+                "Bearer " +
+                savedToken,
+
+              "Content-Type":
+                "application/json"
+            }
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to approve pickup"
+        );
+
+      }
+
+
+      alert(
+        "Pickup request approved successfully."
+      );
+
+
+      await loadPickups();
+
+      await loadDashboard();
+
+    } catch (error) {
+
+      alert(
+        "Error: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     REJECT PICKUP
+  ===================================================== */
+
+  async function rejectPickup(
+    requestId
+  ) {
+
+    const confirmed =
+      confirm(
+        "Reject this pickup request?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admin/pickups/" +
+          requestId +
+          "/reject",
+          {
+
+            method: "PUT",
+
+            headers: {
+              "Authorization":
+                "Bearer " +
+                savedToken,
+
+              "Content-Type":
+                "application/json"
+            }
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to reject pickup"
+        );
+
+      }
+
+
+      alert(
+        "Pickup request rejected successfully."
+      );
+
+
+      await loadPickups();
+
+      await loadDashboard();
+
+    } catch (error) {
+
+      alert(
+        "Error: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     FOOD LISTINGS
+  ===================================================== */
+
+  function scrollToListings() {
+
+    showDashboard();
+
+
+    setTimeout(() => {
+
+      document
+        .getElementById(
+          "listings"
+        )
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }, 100);
+
+  }
+
+
+  /* =====================================================
+     COMING SOON
+  ===================================================== */
+
+  function showComingSoon(
+    feature
+  ) {
+
+    alert(
+      feature +
+      " will be added in the next FoodRescue module."
+    );
+
+  }
+
+
+  /* =====================================================
+     FORMAT STATUS
+  ===================================================== */
+
+  function formatStatus(
+    status
+  ) {
+
+    const value =
+      String(status || "unknown");
+
+
+    return value
+      .charAt(0)
+      .toUpperCase() +
+      value
+        .slice(1)
+        .replace(/_/g, " ");
+
+  }
+
+
+  /* =====================================================
+     ESCAPE HTML
+  ===================================================== */
+
+  function escapeHtml(
+    value
+  ) {
+
+    return String(value ?? "")
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* =====================================================
+     LOGOUT
+  ===================================================== */
+
+  function logout() {
+
+    localStorage.removeItem(
+      "foodrescue_token"
+    );
+
+    localStorage.removeItem(
+      "foodrescue_user"
+    );
+
+    window.location.href =
+      "/login.html";
+
+  }
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ===================================================== */
+
+  loadDashboard();
+
+</script>
+
+</body>
+</html>

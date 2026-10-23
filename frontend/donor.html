@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Donor Dashboard | FoodRescue</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: #f6f8f5;
+      color: #18322b;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      width: 245px;
+      background: #12382f;
+      color: white;
+      padding: 28px 20px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 45px;
+      padding-left: 10px;
+    }
+
+    .logo span {
+      font-weight: 400;
+    }
+
+    .account {
+      padding: 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .account small {
+      display: block;
+      color: #a9c5ba;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .account strong {
+      font-size: 14px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: #c9d9d3;
+      padding: 13px 12px;
+      text-align: left;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: #1d6b52;
+      color: white;
+    }
+
+    .logout {
+      position: absolute;
+      bottom: 25px;
+      left: 20px;
+      right: 20px;
+      border: 1px solid #47665d;
+      background: transparent;
+      color: #d9e5e0;
+      padding: 11px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: #ffffff12;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      margin-left: 245px;
+      width: calc(100% - 245px);
+      padding: 35px 45px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      margin: 0 0 6px;
+      font-size: 32px;
+      letter-spacing: -1px;
+    }
+
+    .topbar p {
+      margin: 0;
+      color: #708078;
+      font-size: 14px;
+    }
+
+    .profile {
+      background: white;
+      border: 1px solid #e3e8e4;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid #e3e8e4;
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .stat small {
+      color: #77857f;
+      font-size: 11px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      margin-top: 8px;
+    }
+
+    .stat span {
+      color: #1d765a;
+      font-size: 12px;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 22px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e3e8e4;
+      border-radius: 15px;
+      padding: 25px;
+    }
+
+    .panel h2 {
+      margin: 0 0 7px;
+      font-size: 21px;
+    }
+
+    .panel-description {
+      color: #748079;
+      font-size: 13px;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #d7dfda;
+      border-radius: 8px;
+      padding: 12px;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #1d765a;
+      box-shadow: 0 0 0 3px rgba(29,118,90,0.07);
+    }
+
+    .submit-button {
+      width: 100%;
+      border: 0;
+      background: #1d765a;
+      color: white;
+      padding: 13px;
+      border-radius: 8px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .submit-button:hover {
+      background: #155e49;
+    }
+
+    .submit-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 7px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .message.success {
+      display: block;
+      background: #edf8f1;
+      color: #24704e;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #a33b3b;
+    }
+
+    /* =========================
+       LISTINGS
+    ========================= */
+
+    .listing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .listing-header h2 {
+      margin: 0;
+    }
+
+    .refresh {
+      border: 1px solid #ccd8d1;
+      background: white;
+      color: #285d4c;
+      padding: 8px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .listing {
+      border: 1px solid #e3e9e5;
+      border-radius: 11px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: #fafcfb;
+    }
+
+    .listing-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .listing h3 {
+      margin: 0 0 5px;
+      font-size: 15px;
+    }
+
+    .category {
+      display: inline-block;
+      background: #e8f3ec;
+      color: #1d765a;
+      padding: 4px 8px;
+      border-radius: 14px;
+      font-size: 10px;
+    }
+
+    .status {
+      padding: 5px 9px;
+      border-radius: 15px;
+      background: #edf5ef;
+      color: #277153;
+      font-size: 10px;
+      height: fit-content;
+    }
+
+    .listing-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      margin-top: 13px;
+      color: #65736d;
+      font-size: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 35px 10px;
+      color: #77847e;
+      font-size: 13px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1050px) {
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+      }
+
+      .logo {
+        font-size: 16px;
+        padding: 0;
+      }
+
+      .logo span,
+      .account,
+      .nav button span,
+      .logout span {
+        display: none;
+      }
+
+      .main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 25px 18px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        display: block;
+      }
+
+      .profile {
+        display: inline-block;
+        margin-top: 15px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      Food<span>Rescue</span>
+    </div>
+
+    <div class="account">
+      <small>ACCOUNT</small>
+      <strong id="accountName">Loading...</strong>
+    </div>
+
+    <nav class="nav">
+
+      <button class="active" onclick="scrollToTop()">
+        ◼ <span>Dashboard</span>
+      </button>
+
+      <button onclick="focusDonationForm()">
+        + <span>Add Food</span>
+      </button>
+
+      <button onclick="focusListings()">
+        ▤ <span>My Listings</span>
+      </button>
+
+    </nav>
+
+    <button class="logout" onclick="logout()">
+      ⇥ <span>Logout</span>
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div>
+
+        <h1>Donor Dashboard</h1>
+
+        <p>
+          List surplus food and help your community rescue it.
+        </p>
+
+      </div>
+
+      <div class="profile" id="profile">
+        Loading...
+      </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <small>MY FOOD LISTINGS</small>
+
+        <strong id="myListings">
+          —
+        </strong>
+
+        <span>
+          Published listings
+        </span>
+
+      </div>
+
+
+      <div class="stat">
+
+        <small>FOOD QUANTITY</small>
+
+        <strong id="myQuantity">
+          —
+        </strong>
+
+        <span>
+          Total quantity listed
+        </span>
+
+      </div>
+
+
+      <div class="stat">
+
+        <small>ACCOUNT ROLE</small>
+
+        <strong>
+          Donor
+        </strong>
+
+        <span>
+          Food contributor
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <div class="content">
+
+
+      <!-- ADD FOOD -->
+
+      <section class="panel" id="donationForm">
+
+        <h2>
+          List Surplus Food
+        </h2>
+
+        <p class="panel-description">
+          Add safe surplus food that volunteers can collect
+          from your location.
+        </p>
+
+
+        <form id="foodForm">
+
+
+          <div class="form-group">
+
+            <label for="foodName">
+              Food name
+            </label>
+
+            <input
+              id="foodName"
+              name="food_name"
+              type="text"
+              placeholder="e.g. Vegetable Biryani"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="quantity">
+              Quantity
+            </label>
+
+            <input
+              id="quantity"
+              name="quantity"
+              type="number"
+              min="1"
+              placeholder="e.g. 50"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="category">
+              Food category
+            </label>
+
+            <select
+              id="category"
+              name="category_id"
+              required
+            >
+
+              <option value="">
+                Loading categories...
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="unit">
+              Unit
+            </label>
+
+            <select
+              id="unit"
+              name="unit"
+              required
+            >
+
+              <option value="servings">
+                Servings
+              </option>
+
+              <option value="boxes">
+                Boxes
+              </option>
+
+              <option value="packs">
+                Packs
+              </option>
+
+              <option value="kg">
+                Kilograms
+              </option>
+
+              <option value="items">
+                Items
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="location">
+              Pickup location
+            </label>
+
+            <input
+              id="location"
+              name="pickup_location"
+              type="text"
+              placeholder="e.g. Block A Canteen"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="expiry">
+              Available until
+            </label>
+
+            <input
+              id="expiry"
+              name="expiry_datetime"
+              type="datetime-local"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="description">
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Describe the food, packaging or pickup instructions..."
+            ></textarea>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="submit-button"
+            id="submitButton"
+          >
+            Publish Food Listing
+          </button>
+
+        </form>
+
+
+        <div
+          id="formMessage"
+          class="message"
+        ></div>
+
+      </section>
+
+
+      <!-- MY LISTINGS -->
+
+      <section
+        class="panel"
+        id="listings"
+      >
+
+        <div class="listing-header">
+
+          <h2>
+            My Food Listings
+          </h2>
+
+          <button
+            class="refresh"
+            onclick="loadListings()"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+        <div id="listingContainer">
+
+          <div class="empty">
+            Loading your listings...
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+const token =
+  localStorage.getItem("foodrescue_token");
+
+const savedUser =
+  localStorage.getItem("foodrescue_user");
+
+let currentUser = null;
+
+
+/*
+   A donor dashboard must only be accessible
+   after successful login.
+*/
+
+if (!token || !savedUser) {
+
+  window.location.replace("/login.html");
+
+}
+
+
+/*
+   Read logged-in user.
+*/
+
+try {
+
+  currentUser =
+    JSON.parse(savedUser);
+
+} catch (error) {
+
+  localStorage.removeItem("foodrescue_token");
+  localStorage.removeItem("foodrescue_user");
+
+  window.location.replace("/login.html");
+
+}
+
+
+/*
+   Only donor accounts can access this page.
+*/
+
+if (!currentUser || currentUser.role !== "donor") {
+
+  if (currentUser && currentUser.role === "admin") {
+
+    window.location.replace("/admin.html");
+
+  } else if (currentUser && currentUser.role === "volunteer") {
+
+    window.location.replace("/volunteer.html");
+
+  } else {
+
+    localStorage.removeItem("foodrescue_token");
+    localStorage.removeItem("foodrescue_user");
+
+    window.location.replace("/login.html");
+
+  }
+
+}
+
+
+/* =====================================================
+   DISPLAY USER
+===================================================== */
+
+document.getElementById("accountName")
+  .textContent =
+  currentUser.name;
+
+document.getElementById("profile")
+  .textContent =
+  currentUser.name +
+  " • Donor";
+
+
+/* =====================================================
+   LOAD CATEGORIES
+===================================================== */
+
+async function loadCategories() {
+
+  try {
+
+    const response =
+      await fetch("/api/categories");
+
+    const categories =
+      await response.json();
+
+    const select =
+      document.getElementById("category");
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        categories.error ||
+        "Unable to load categories"
+      );
+
+    }
+
+
+    select.innerHTML =
+      '<option value="">Select category</option>' +
+
+      categories.map(category => `
+
+        <option value="${category.category_id}">
+          ${category.category_name}
+        </option>
+
+      `).join("");
+
+
+  } catch (error) {
+
+    document.getElementById("category").innerHTML =
+      '<option value="">Unable to load categories</option>';
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD MY LISTINGS
+===================================================== */
+
+async function loadListings() {
+
+  const container =
+    document.getElementById("listingContainer");
+
+
+  try {
+
+    const response =
+      await fetch("/api/food");
+
+
+    const food =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        food.error ||
+        "Unable to load food"
+      );
+
+    }
+
+
+    /*
+       Current backend returns all available food.
+
+       We filter the results using the logged-in
+       donor's name.
+    */
+
+    const myFood =
+      food.filter(item =>
+        item.donor_name === currentUser.name
+      );
+
+
+    document.getElementById("myListings")
+      .textContent =
+      myFood.length;
+
+
+    const totalQuantity =
+      myFood.reduce(
+        (total, item) =>
+          total +
+          Number(item.quantity || 0),
+        0
+      );
+
+
+    document.getElementById("myQuantity")
+      .textContent =
+      totalQuantity;
+
+
+    if (!myFood.length) {
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          You haven't published any
+          available food listings yet.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      myFood.map(item => `
+
+        <article class="listing">
+
+          <div class="listing-top">
+
+            <div>
+
+              <h3>
+                ${item.food_name}
+              </h3>
+
+              <span class="category">
+                ${item.category_name}
+              </span>
+
+            </div>
+
+            <span class="status">
+              Available
+            </span>
+
+          </div>
+
+
+          <div class="listing-info">
+
+            <div>
+
+              <strong>
+                Quantity:
+              </strong>
+
+              ${item.quantity}
+              ${item.unit}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Location:
+              </strong>
+
+              ${item.pickup_location}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Expires:
+              </strong>
+
+              ${new Date(
+                item.expiry_datetime
+              ).toLocaleString()}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Donor:
+              </strong>
+
+              ${item.donor_name}
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `).join("");
+
+
+  } catch (error) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        Unable to load your listings.
+
+        <br>
+
+        <small>
+          ${error.message}
+        </small>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   ADD FOOD
+===================================================== */
+
+document
+  .getElementById("foodForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const button =
+        document.getElementById(
+          "submitButton"
+        );
+
+
+      const message =
+        document.getElementById(
+          "formMessage"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Publishing...";
+
+
+      message.className =
+        "message";
+
+      message.textContent =
+        "";
+
+
+      const formData =
+        new FormData(event.target);
+
+
+      const body =
+        Object.fromEntries(formData);
+
+
+      body.quantity =
+        Number(body.quantity);
+
+
+      body.category_id =
+        Number(body.category_id);
+
+
+      /*
+         Use the actual logged-in donor.
+      */
+
+      body.donor_id =
+        currentUser.user_id;
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/food",
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(body)
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Unable to create listing"
+          );
+
+        }
+
+
+        message.className =
+          "message success";
+
+
+        message.textContent =
+          "Food listing published successfully!";
+
+
+        event.target.reset();
+
+
+        await loadListings();
+
+
+      } catch (error) {
+
+        message.className =
+          "message error";
+
+
+        message.textContent =
+          error.message;
+
+      }
+
+
+      button.disabled = false;
+
+
+      button.textContent =
+        "Publish Food Listing";
+
+    }
+  );
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function focusDonationForm() {
+
+  document
+    .getElementById("donationForm")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+function focusListings() {
+
+  document
+    .getElementById("listings")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+function scrollToTop() {
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+  localStorage.removeItem(
+    "foodrescue_token"
+  );
+
+  localStorage.removeItem(
+    "foodrescue_user"
+  );
+
+  window.location.replace(
+    "/login.html"
+  );
+
+}
+
+
+/* =====================================================
+   START DASHBOARD
+===================================================== */
+
+loadCategories();
+
+loadListings();
+
+</script>
+
+</body>
+</html>

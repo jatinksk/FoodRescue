@@ -1,64 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FoodRescue | Rescue Food. Reduce Waste.</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="FoodRescue connects surplus food donors with volunteers to reduce food waste and serve communities."
+  >
+
+  <title>FoodRescue | Rescue Food. Serve Communities.</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<nav>
-  <div class="logo">Food<span>Rescue</span></div>
-  <div class="navlinks"><a href="#home">Home</a><a href="#food">Available Food</a><a href="#donate">Donate</a><a href="#about">About</a></div>
-  <button class="navbtn" onclick="document.getElementById('donate').scrollIntoView()">Donate Food</button>
-</nav>
 
-<header id="home">
-  <div class="hero">
-    <div class="badge">🌱 COMMUNITY FOOD RESCUE</div>
-    <h1>Good food should<br><span>never go to waste.</span></h1>
-    <p>FoodRescue connects surplus food donors with volunteers and community organizations so good food can reach people who need it.</p>
-    <div class="actions"><button class="primary" onclick="document.getElementById('food').scrollIntoView()">Find Food</button><button class="secondary" onclick="document.getElementById('donate').scrollIntoView()">Donate Surplus</button></div>
-  </div>
-  <div class="hero-card"><div class="plate">🍲</div><h3>Every meal matters.</h3><p>Turn surplus into support for your community.</p></div>
-</header>
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="logo">
+      Food<span>Rescue</span>
+    </div>
 
-<section class="stats" id="stats">
-  <div><strong id="donations">0</strong><small>Food Listings</small></div>
-  <div><strong id="servings">0</strong><small>Servings Listed</small></div>
-  <div><strong id="pickups">0</strong><small>Completed Pickups</small></div>
-  <div><strong id="volunteers">0</strong><small>Volunteers</small></div>
-</section>
+    <div class="navlinks">
+      <a href="#home">Home</a>
+      <a href="#food">Explore Food</a>
+      <a href="#map">Food Map</a>
+      <a href="#donate">Donate</a>
+      <a href="#about">How It Works</a>
+    </div>
 
-<section id="food">
-  <div class="section-head"><div><p class="eyebrow">AVAILABLE NOW</p><h2>Surplus food near you</h2></div><button class="outline" onclick="loadFood()">Refresh</button></div>
-  <div id="foodGrid" class="food-grid"></div>
-</section>
+    <button
+      class="navbtn"
+      onclick="document.getElementById('donate').scrollIntoView({behavior:'smooth'})"
+    >
+      Donate Food
+    </button>
+  </nav>
 
-<section id="donate" class="donate">
-  <div><p class="eyebrow">DONATE</p><h2>Have surplus food?</h2><p>List it in under a minute. Volunteers can request pickup and help distribute it.</p></div>
-  <form id="foodForm">
-    <input name="food_name" placeholder="Food name" required>
-    <input name="quantity" type="number" min="1" placeholder="Quantity / servings" required>
-    <select name="category_id" id="category" required></select>
-    <input name="unit" placeholder="Unit (e.g. servings)" value="servings">
-    <input name="pickup_location" placeholder="Pickup location" required>
-    <input name="expiry_datetime" type="datetime-local" required>
-    <textarea name="description" placeholder="Short description"></textarea>
-    <button class="primary" type="submit">Publish Food Listing</button>
-    <p id="formMsg"></p>
-  </form>
-</section>
 
-<section id="about" class="about">
-  <p class="eyebrow">HOW IT WORKS</p><h2>From surplus to service.</h2>
-  <div class="steps">
-    <div><b>01</b><h3>Donate</h3><p>Donors list safe surplus food with quantity and pickup details.</p></div>
-    <div><b>02</b><h3>Rescue</h3><p>Volunteers find available listings and request a pickup.</p></div>
-    <div><b>03</b><h3>Distribute</h3><p>Rescued food is delivered to community beneficiaries.</p></div>
-  </div>
-</section>
-<footer>FoodRescue • DBMS Project • Built for a better campus</footer>
-<script src="app.js"></script>
+  <!-- HERO -->
+  <header id="home">
+
+    <div class="hero">
+
+      <div class="badge">
+        🌱 COMMUNITY FOOD RESCUE
+      </div>
+
+      <h1>
+        Turn surplus food
+        <span>into community impact.</span>
+      </h1>
+
+      <p>
+        FoodRescue connects food donors with volunteers so surplus food
+        can reach people instead of ending up as waste.
+      </p>
+
+      <div class="actions">
+
+        <button
+          class="primary"
+          onclick="document.getElementById('food').scrollIntoView({behavior:'smooth'})"
+        >
+          Explore Available Food
+        </button>
+
+        <button
+          class="secondary"
+          onclick="document.getElementById('donate').scrollIntoView({behavior:'smooth'})"
+        >
+          Donate Surplus Food
+        </button>
+
+      </div>
+
+      <div class="hero-trust">
+        <span>✓ Real-time listings</span>
+        <span>✓ Volunteer pickup</span>
+        <span>✓ Community impact</span>
+      </div>
+
+    </div>
+
+
+    <div class="hero-card">
+
+      <div class="hero-icon">🍱</div>
+
+      <div class="live-indicator">
+        <span></span> LIVE RESCUE NETWORK
+      </div>
+
+      <h3>Every meal matters.</h3>
+
+      <p>
+        A simple connection between surplus food and people who can
+        help rescue it.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- IMPACT STATS -->
+  <section class="stats" id="stats">
+
+    <div>
+      <strong id="donations">0</strong>
+      <small>Food Listings</small>
+    </div>
+
+    <div>
+      <strong id="servings">0</strong>
+      <small>Servings Listed</small>
+    </div>
+
+    <div>
+      <strong id="pickups">0</strong>
+      <small>Completed Pickups</small>
+    </div>
+
+    <div>
+      <strong id="volunteers">0</strong>
+      <small>Volunteers</small>
+    </div>
+
+  </section>
+
+
+  <!-- FOOD LISTINGS -->
+  <section id="food">
+
+    <div class="section-head">
+
+      <div>
+        <p class="eyebrow">AVAILABLE NOW</p>
+        <h2>Surplus food near you</h2>
+        <p class="section-description">
+          Discover food that is ready to be rescued before its pickup window expires.
+        </p>
+      </div>
+
+      <button
+        class="outline"
+        onclick="loadFood()"
+      >
+        ↻ Refresh Listings
+      </button>
+
+    </div>
+
+    <div id="foodGrid" class="food-grid">
+      <p>Loading available food...</p>
+    </div>
+
+  </section>
+
+
+  <!-- MAP SECTION -->
+  <section id="map" class="map-section">
+
+    <div class="section-head">
+
+      <div>
+        <p class="eyebrow">DISCOVER</p>
+        <h2>Food rescue map</h2>
+        <p class="section-description">
+          Find surplus food locations and connect volunteers with nearby pickups.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="map-preview">
+
+      <div class="map-grid"></div>
+
+      <div class="map-marker marker-one">🍱</div>
+      <div class="map-marker marker-two">🍲</div>
+      <div class="map-marker marker-three">🥗</div>
+      <div class="map-marker marker-four">🍞</div>
+
+      <div class="map-center">
+
+        <div class="map-pin">📍</div>
+
+        <h3>Food available nearby</h3>
+
+        <p>
+          Interactive location discovery coming next.
+        </p>
+
+      </div>
+
+      <div class="map-label">
+        🟢 Available for pickup
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DONATION -->
+  <section id="donate" class="donate">
+
+    <div>
+
+      <p class="eyebrow">DONATE</p>
+
+      <h2>
+        Have surplus food?
+        <br>
+        Put it to good use.
+      </h2>
+
+      <p>
+        Restaurants, hostels, events, households and organizations
+        can list safe surplus food in under a minute.
+      </p>
+
+      <div class="donation-points">
+
+        <div>
+          <span>01</span>
+          <div>
+            <strong>List your food</strong>
+            <p>Add quantity, category and pickup details.</p>
+          </div>
+        </div>
+
+        <div>
+          <span>02</span>
+          <div>
+            <strong>Volunteer finds it</strong>
+            <p>A volunteer can request the available food.</p>
+          </div>
+        </div>
+
+        <div>
+          <span>03</span>
+          <div>
+            <strong>Food gets rescued</strong>
+            <p>The surplus food moves towards the community.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- DONATION FORM -->
+    <form id="foodForm">
+
+      <div class="form-title">
+        <h3>List surplus food</h3>
+        <p>Provide the basic pickup information.</p>
+      </div>
+
+
+      <label for="food-name">
+        Food name
+      </label>
+
+      <input
+        id="food-name"
+        name="food_name"
+        placeholder="e.g. Vegetable Biryani"
+        required
+      >
+
+
+      <label for="quantity">
+        Quantity / servings
+      </label>
+
+      <input
+        id="quantity"
+        name="quantity"
+        type="number"
+        min="1"
+        placeholder="e.g. 25"
+        required
+      >
+
+
+      <label for="category">
+        Food category
+      </label>
+
+      <select
+        id="category"
+        name="category_id"
+        required
+      >
+        <option value="">Loading categories...</option>
+      </select>
+
+
+      <label for="unit">
+        Unit
+      </label>
+
+      <input
+        id="unit"
+        name="unit"
+        placeholder="e.g. servings"
+        value="servings"
+        required
+      >
+
+
+      <label for="pickup-location">
+        Pickup location
+      </label>
+
+      <input
+        id="pickup-location"
+        name="pickup_location"
+        placeholder="Pickup address / location"
+        required
+      >
+
+
+      <label for="expiry">
+        Available until
+      </label>
+
+      <input
+        id="expiry"
+        name="expiry_datetime"
+        type="datetime-local"
+        required
+      >
+
+
+      <label for="description">
+        Description
+      </label>
+
+      <textarea
+        id="description"
+        name="description"
+        placeholder="Add useful details about the food..."
+      ></textarea>
+
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        Publish Food Listing
+      </button>
+
+
+      <p
+        id="formMsg"
+        class="form-message"
+        aria-live="polite"
+      ></p>
+
+    </form>
+
+  </section>
+
+
+  <!-- HOW IT WORKS -->
+  <section id="about" class="about">
+
+    <p class="eyebrow">HOW IT WORKS</p>
+
+    <h2>From surplus to service.</h2>
+
+    <p class="section-description centered">
+      FoodRescue creates a simple chain from donation to pickup.
+    </p>
+
+
+    <div class="steps">
+
+      <div>
+        <span class="step-number">01</span>
+        <h3>Donate</h3>
+        <p>
+          Donors list safe surplus food with quantity and pickup details.
+        </p>
+      </div>
+
+      <div>
+        <span class="step-number">02</span>
+        <h3>Rescue</h3>
+        <p>
+          Volunteers discover available listings and request pickups.
+        </p>
+      </div>
+
+      <div>
+        <span class="step-number">03</span>
+        <h3>Distribute</h3>
+        <p>
+          Rescued food is moved towards people and community organizations.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="footer-logo">
+      Food<span>Rescue</span>
+    </div>
+
+    <p>
+      Rescue food. Reduce waste. Strengthen communities.
+    </p>
+
+    <small>
+      DBMS Project • Built for a better campus
+    </small>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+  <script src="app.js"></script>
+
 </body>
 </html>
