@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,15 @@
   <title>FoodRescue | Rescue Food. Serve Communities.</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -38,10 +48,8 @@
     </button>
   </nav>
 
-
   <!-- HERO -->
   <header id="home">
-
     <div class="hero">
 
       <div class="badge">
@@ -59,7 +67,6 @@
       </p>
 
       <div class="actions">
-
         <button
           class="primary"
           onclick="document.getElementById('food').scrollIntoView({behavior:'smooth'})"
@@ -73,7 +80,6 @@
         >
           Donate Surplus Food
         </button>
-
       </div>
 
       <div class="hero-trust">
@@ -81,12 +87,9 @@
         <span>✓ Volunteer pickup</span>
         <span>✓ Community impact</span>
       </div>
-
     </div>
 
-
     <div class="hero-card">
-
       <div class="hero-icon">🍱</div>
 
       <div class="live-indicator">
@@ -99,15 +102,11 @@
         A simple connection between surplus food and people who can
         help rescue it.
       </p>
-
     </div>
-
   </header>
-
 
   <!-- IMPACT STATS -->
   <section class="stats" id="stats">
-
     <div>
       <strong id="donations">0</strong>
       <small>Food Listings</small>
@@ -127,15 +126,11 @@
       <strong id="volunteers">0</strong>
       <small>Volunteers</small>
     </div>
-
   </section>
-
 
   <!-- FOOD LISTINGS -->
   <section id="food">
-
     <div class="section-head">
-
       <div>
         <p class="eyebrow">AVAILABLE NOW</p>
         <h2>Surplus food near you</h2>
@@ -144,73 +139,41 @@
         </p>
       </div>
 
-      <button
-        class="outline"
-        onclick="loadFood()"
-      >
+      <button class="outline" onclick="loadFood()">
         ↻ Refresh Listings
       </button>
-
     </div>
 
     <div id="foodGrid" class="food-grid">
       <p>Loading available food...</p>
     </div>
-
   </section>
-
 
   <!-- MAP SECTION -->
   <section id="map" class="map-section">
-
     <div class="section-head">
-
       <div>
         <p class="eyebrow">DISCOVER</p>
         <h2>Food rescue map</h2>
         <p class="section-description">
-          Find surplus food locations and connect volunteers with nearby pickups.
+          Explore food donation locations and find nearby pickups.
         </p>
       </div>
-
     </div>
 
+    <div
+      id="foodRescueMap"
+      style="height: 450px; width: 100%; border-radius: 18px; z-index: 0;"
+    ></div>
 
-    <div class="map-preview">
-
-      <div class="map-grid"></div>
-
-      <div class="map-marker marker-one">🍱</div>
-      <div class="map-marker marker-two">🍲</div>
-      <div class="map-marker marker-three">🥗</div>
-      <div class="map-marker marker-four">🍞</div>
-
-      <div class="map-center">
-
-        <div class="map-pin">📍</div>
-
-        <h3>Food available nearby</h3>
-
-        <p>
-          Interactive location discovery coming next.
-        </p>
-
-      </div>
-
-      <div class="map-label">
-        🟢 Available for pickup
-      </div>
-
-    </div>
-
+    <p id="mapStatus" style="margin-top: 12px;" aria-live="polite">
+      Loading interactive map...
+    </p>
   </section>
-
 
   <!-- DONATION -->
   <section id="donate" class="donate">
-
     <div>
-
       <p class="eyebrow">DONATE</p>
 
       <h2>
@@ -225,7 +188,6 @@
       </p>
 
       <div class="donation-points">
-
         <div>
           <span>01</span>
           <div>
@@ -249,25 +211,17 @@
             <p>The surplus food moves towards the community.</p>
           </div>
         </div>
-
       </div>
-
     </div>
-
 
     <!-- DONATION FORM -->
     <form id="foodForm">
-
       <div class="form-title">
         <h3>List surplus food</h3>
         <p>Provide the basic pickup information.</p>
       </div>
 
-
-      <label for="food-name">
-        Food name
-      </label>
-
+      <label for="food-name">Food name</label>
       <input
         id="food-name"
         name="food_name"
@@ -275,11 +229,7 @@
         required
       >
 
-
-      <label for="quantity">
-        Quantity / servings
-      </label>
-
+      <label for="quantity">Quantity / servings</label>
       <input
         id="quantity"
         name="quantity"
@@ -289,24 +239,12 @@
         required
       >
 
-
-      <label for="category">
-        Food category
-      </label>
-
-      <select
-        id="category"
-        name="category_id"
-        required
-      >
+      <label for="category">Food category</label>
+      <select id="category" name="category_id" required>
         <option value="">Loading categories...</option>
       </select>
 
-
-      <label for="unit">
-        Unit
-      </label>
-
+      <label for="unit">Unit</label>
       <input
         id="unit"
         name="unit"
@@ -315,11 +253,7 @@
         required
       >
 
-
-      <label for="pickup-location">
-        Pickup location
-      </label>
-
+      <label for="pickup-location">Pickup location</label>
       <input
         id="pickup-location"
         name="pickup_location"
@@ -327,11 +261,7 @@
         required
       >
 
-
-      <label for="expiry">
-        Available until
-      </label>
-
+      <label for="expiry">Available until</label>
       <input
         id="expiry"
         name="expiry_datetime"
@@ -339,100 +269,108 @@
         required
       >
 
-
-      <label for="description">
-        Description
-      </label>
-
+      <label for="description">Description</label>
       <textarea
         id="description"
         name="description"
         placeholder="Add useful details about the food..."
       ></textarea>
 
-
-      <button
-        class="primary"
-        type="submit"
-      >
+      <button class="primary" type="submit">
         Publish Food Listing
       </button>
-
 
       <p
         id="formMsg"
         class="form-message"
         aria-live="polite"
       ></p>
-
     </form>
-
   </section>
-
 
   <!-- HOW IT WORKS -->
   <section id="about" class="about">
-
     <p class="eyebrow">HOW IT WORKS</p>
-
     <h2>From surplus to service.</h2>
 
     <p class="section-description centered">
       FoodRescue creates a simple chain from donation to pickup.
     </p>
 
-
     <div class="steps">
-
       <div>
         <span class="step-number">01</span>
         <h3>Donate</h3>
-        <p>
-          Donors list safe surplus food with quantity and pickup details.
-        </p>
+        <p>Donors list safe surplus food with quantity and pickup details.</p>
       </div>
 
       <div>
         <span class="step-number">02</span>
         <h3>Rescue</h3>
-        <p>
-          Volunteers discover available listings and request pickups.
-        </p>
+        <p>Volunteers discover available listings and request pickups.</p>
       </div>
 
       <div>
         <span class="step-number">03</span>
         <h3>Distribute</h3>
-        <p>
-          Rescued food is moved towards people and community organizations.
-        </p>
+        <p>Rescued food is moved towards people and community organizations.</p>
       </div>
-
     </div>
-
   </section>
-
 
   <!-- FOOTER -->
   <footer>
-
     <div class="footer-logo">
       Food<span>Rescue</span>
     </div>
 
-    <p>
-      Rescue food. Reduce waste. Strengthen communities.
-    </p>
+    <p>Rescue food. Reduce waste. Strengthen communities.</p>
 
     <small>
       DBMS Project • Built for a better campus
     </small>
-
   </footer>
-
 
   <!-- JAVASCRIPT -->
   <script src="app.js"></script>
+
+  <!-- INTERACTIVE FOOD RESCUE MAP -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const mapStatus = document.getElementById("mapStatus");
+
+      if (typeof L === "undefined") {
+        mapStatus.textContent =
+          "Map library could not load. Check your internet connection.";
+        return;
+      }
+
+      // Center map around Mohali and Chandigarh
+      const foodRescueMap = L.map("foodRescueMap").setView(
+        [30.7046, 76.7179],
+        11
+      );
+
+      // Add OpenStreetMap tiles
+      L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "&copy; OpenStreetMap contributors",
+          maxZoom: 19
+        }
+      ).addTo(foodRescueMap);
+
+      mapStatus.textContent =
+        "Interactive map ready. Food pickup markers will be added next.";
+
+      // Refresh map when user navigates to map section
+      document.querySelectorAll('a[href="#map"]').forEach(link => {
+        link.addEventListener("click", () => {
+          setTimeout(() => foodRescueMap.invalidateSize(), 350);
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
